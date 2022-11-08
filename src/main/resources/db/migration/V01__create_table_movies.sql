@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS movies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    "SYEAR" INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    studios VARCHAR(100) NOT NULL,
+    producers VARCHAR(200) NOT NULL,
+    winner VARCHAR(10)
+);
