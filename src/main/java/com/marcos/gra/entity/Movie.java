@@ -8,6 +8,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class Movie {
 
     @Id
@@ -34,9 +35,9 @@ public class Movie {
 
     @Getter
     @Setter
-    private String winner;
+    private boolean winner;
 
-    public static Movie of(int year, String title, String studios, String producers, String winner) {
+    public static Movie of(int year, String title, String studios, String producers, boolean winner) {
         return Movie
                 .builder()
                 .syear(year)

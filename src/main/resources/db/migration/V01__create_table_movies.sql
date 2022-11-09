@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS movies (
     title VARCHAR(100) NOT NULL,
     studios VARCHAR(100) NOT NULL,
     producers VARCHAR(200) NOT NULL,
-    winner VARCHAR(10)
+    winner BOOLEAN
 );
