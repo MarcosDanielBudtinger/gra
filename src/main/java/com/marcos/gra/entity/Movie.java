@@ -19,7 +19,7 @@ public class Movie {
     @Getter
     @Setter
     @Column(name = "syear")
-    private Integer syear;
+    private Integer year;
 
     @Getter
     @Setter
@@ -40,7 +40,7 @@ public class Movie {
     public static Movie of(int year, String title, String studios, String producers, boolean winner) {
         return Movie
                 .builder()
-                .syear(year)
+                .year(year)
                 .title(title)
                 .studios(studios)
                 .producers(producers)

@@ -1,6 +1,6 @@
-package com.marcos.gra.controller;
+package com.marcos.gra.resource;
 
-import com.marcos.gra.entity.Movie;
+import com.marcos.gra.dto.MovieResponseDTO;
 import com.marcos.gra.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("movies")
-public class MovieController {
+public class MovieResource {
 
     @Autowired
     private MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies() {
-        List<Movie> movieList = movieService.findMovies();
-        return movieList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(movieList);
+    public ResponseEntity<MovieResponseDTO> getAllMovies() {
+        Optional<MovieResponseDTO> movieList = movieService.findMovies();
+        return movieList.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
 }

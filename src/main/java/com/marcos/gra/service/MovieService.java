@@ -1,5 +1,7 @@
 package com.marcos.gra.service;
 
+import com.marcos.gra.dto.MovieDTO;
+import com.marcos.gra.dto.MovieResponseDTO;
 import com.marcos.gra.entity.Movie;
 import com.marcos.gra.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public List<Movie> findMovies() {
+    public Optional<MovieResponseDTO> findMovies() {
 
         var movieList = movieRepository.findByWinnerTrue();
 
@@ -25,9 +27,34 @@ public class MovieService {
 
         var mapMoviesWithMoreWinners = extractMoviesAccordingProducersWithMoreWinners(movieList, producersName);
 
-        System.out.println(mapMoviesWithMoreWinners);
+        var movieDTOList = transformWinnersInMovieDto(mapMoviesWithMoreWinners);
 
-        return movieList;
+        var average = getAverageInterval(movieDTOList);
+
+        return Optional.of(getMovieResponse(movieDTOList, average));
+    }
+
+    private static MovieResponseDTO getMovieResponse(List<MovieDTO> movieDTOList, Double average){
+        List<MovieDTO> min = new ArrayList<>();
+        List<MovieDTO> max = new ArrayList<>();
+        movieDTOList.forEach(movieDTO -> {
+            if(movieDTO.getInterval() < average) {
+                min.add(movieDTO);
+            } else{
+                max.add(movieDTO);
+            }
+        });
+        return MovieResponseDTO.of(min, max);
+    }
+
+    private static Double getAverageInterval(List<MovieDTO> movieDTOList) {
+        return movieDTOList.stream().mapToInt(MovieDTO::getInterval).sum() / (double) movieDTOList.size();
+    }
+
+    private static List<MovieDTO> transformWinnersInMovieDto(HashMap<String, List<Integer>> mapMoviesWithMoreWinners) {
+        List<MovieDTO> movieDTOList = new ArrayList<>();
+        mapMoviesWithMoreWinners.forEach((key, value) -> movieDTOList.add(MovieDTO.of(key, value)));
+        return movieDTOList;
     }
 
     private static HashMap<String, List<Integer>> extractMoviesAccordingProducersWithMoreWinners(List<Movie> movieList, List<String> producersName) {
@@ -37,16 +64,16 @@ public class MovieService {
             if(movie.getProducers().contains(producerName)){
                 var listYear = mapWinners.get(producerName);
                 if (!mapWinners.containsKey(producerName)){
-                    var list = new ArrayList(Arrays.asList((movie.getSyear())));
+                    List<Integer> list = new ArrayList<>();
+                    list.add(movie.getYear());
                     mapWinners.put(producerName, list);
                 } else {
-                    Integer year = movie.getSyear();
+                    var year = movie.getYear();
                     listYear.add(year);
                     mapWinners.put(producerName, listYear);
                 }
             }
         }));
-
         return mapWinners;
     }
 
@@ -65,8 +92,8 @@ public class MovieService {
 
     private static List<String> processProducersName(List<Movie> movieList) {
         List<String> producerWinner = new ArrayList<>();
-        movieList.forEach(s -> {
-            var result = s.getProducers().split(" and |, |;\\s");
+        movieList.forEach(movie -> {
+            var result = movie.getProducers().split(" and |, |;\\s");
             if(result.length > 0){
                 producerWinner.addAll(Arrays.asList(result));
             }
