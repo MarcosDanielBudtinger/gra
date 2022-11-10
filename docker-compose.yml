@@ -7,14 +7,3 @@ services:
     build:
       context: ./
       dockerfile: DockerFile
-#
-#
-#money-rest-api:
-#  image: money-rest-api
-#  network_mode: bridge
-#  container_name: money-rest-api
-#  build:
-#    context: ./
-#    dockerfile: Dockerfile
-#  ports:
-#    - 8080:8080
