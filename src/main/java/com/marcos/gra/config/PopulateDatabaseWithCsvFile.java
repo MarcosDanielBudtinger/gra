@@ -2,9 +2,9 @@ package com.marcos.gra.config;
 
 import com.marcos.gra.entity.Movie;
 import com.marcos.gra.repository.MovieRepository;
+import com.marcos.gra.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +19,8 @@ public class PopulateDatabaseWithCsvFile {
 
     private static final Logger log = LoggerFactory.getLogger(PopulateDatabaseWithCsvFile.class);
 
-    @Autowired
-    @Value("classpath:/csvfile")
-    Resource resource;
-
     @Bean
-    CommandLineRunner populateDatabase(MovieRepository repository) {
+    CommandLineRunner populateDatabase(MovieService service, @Value("classpath:/csvfile")Resource resource) {
 
         return args -> {
             log.info("Starting populate table movies process...");
@@ -43,11 +39,13 @@ public class PopulateDatabaseWithCsvFile {
                 reader.close();
 
                 if(!movieList.isEmpty()) {
-                    movieList.parallelStream().forEach(repository::save);
+                    movieList.parallelStream().forEach(service::save);
                 }
                 log.info("Process populate table movies completed...");
             }catch (Exception e) {
-                log.error("Error trying to read csv file!");
+                String exception = e.getMessage();
+                log.error(String.format("Error trying to read csv file! " +
+                   "Please verify that the file exists and is in the correct location. ERROR: %s", exception));
             }
         };
     }

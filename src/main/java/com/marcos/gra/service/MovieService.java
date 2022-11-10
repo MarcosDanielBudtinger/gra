@@ -34,11 +34,15 @@ public class MovieService {
         return Optional.of(getMovieResponse(movieDTOList, average));
     }
 
+    public Movie save(Movie movie){
+        return movieRepository.save(movie);
+    }
+
     private static MovieResponseDTO getMovieResponse(List<MovieDTO> movieDTOList, Double average){
         List<MovieDTO> min = new ArrayList<>();
         List<MovieDTO> max = new ArrayList<>();
         movieDTOList.forEach(movieDTO -> {
-            if(movieDTO.getInterval() < average) {
+            if(movieDTO.getInterval() <= average) {
                 min.add(movieDTO);
             } else{
                 max.add(movieDTO);

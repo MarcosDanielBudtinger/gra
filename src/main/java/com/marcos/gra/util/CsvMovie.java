@@ -1,5 +1,4 @@
 package com.marcos.gra.util;
-import com.opencsv.bean.CsvBindByName;
 import lombok.*;
 
 @ToString
@@ -12,6 +11,5 @@ public class CsvMovie {
     private String title;
     private String studios;
     private String producers;
-    @CsvBindByName(column = "winner", required = false)
     private String winner;
 }
