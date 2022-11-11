@@ -66,7 +66,7 @@ Temos algumas formas de rodar o projeto sendo elas:
 na saida teremos algo como na imagem a seguir: 
 ![image](https://user-images.githubusercontent.com/19701042/201356547-242de0f2-a9a4-4ea5-8db2-062ffe8e4131.png)
 
-repare que temos o nome do build como 2f259f03b214, feito isso basta executar o comando `docker run 2f259f03b214`
+repare que temos o nome do build como 2f259f03b214, feito isso basta executar o comando `docker run -p 8080:8080 2f259f03b214`
 Pronto a aplicação irá subir.
 
 Efetua a chamada a seguir:
