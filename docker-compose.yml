@@ -1,7 +1,7 @@
 version: '3'
 services:
-  springboot-docker-container:
-    image: springboot-docker-container
+  spring-boot-docker:
+    image: sspring-boot-docker
     ports:
       - "8080:8080"
     build:
