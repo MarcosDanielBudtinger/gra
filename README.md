@@ -61,13 +61,14 @@ Clone o repositório:
 
 Temos algumas formas de rodar o projeto sendo elas: 
 - Abrir o projeto na IDE e rodar a classe GraApplication.
-- Abrir o terminal na pasta do projeto executar o comando mvn clean install e depois do build rodar o jar como nome spring-boot-docker que fica dentro da pasta target ex: `java -jar target/spring-boot-docker.jar`
+- Abrir o terminal na pasta do projeto executar o comando `mvn clean install` e depois do build rodar o jar como nome spring-boot-docker que fica dentro da pasta target ex: `java -jar target/spring-boot-docker.jar`
 - Rodar via docker, na raiz do projeto vc pode rodar o comando `docker build .`
 na saida teremos algo como na imagem a seguir: 
 ![image](https://user-images.githubusercontent.com/19701042/201356547-242de0f2-a9a4-4ea5-8db2-062ffe8e4131.png)
 
 repare que temos o nome do build como 2f259f03b214, feito isso basta executar o comando `docker run -p 8080:8080 2f259f03b214`
 Pronto a aplicação irá subir.
+- Rodar via docker-compose, na raiz do projeto executar o seguinte comando: `docker-compose up`
 
 Efetua a chamada a seguir:
 http://localhost:8000/v1/movies
