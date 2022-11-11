@@ -1,15 +1,13 @@
 package com.marcos.gra.config;
 
 import com.marcos.gra.entity.Movie;
-import com.marcos.gra.repository.MovieRepository;
 import com.marcos.gra.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.util.*;
@@ -20,15 +18,16 @@ public class PopulateDatabaseWithCsvFile {
     private static final Logger log = LoggerFactory.getLogger(PopulateDatabaseWithCsvFile.class);
 
     @Bean
-    CommandLineRunner populateDatabase(MovieService service, @Value("classpath:/csvfile")Resource resource) {
+    CommandLineRunner populateDatabase(MovieService service) {
 
         return args -> {
             log.info("Starting populate table movies process...");
             try {
-                var file = new File(resource.getFile().getPath()+"/movielist.csv");
+                InputStream imp = new ClassPathResource("/csvfile/movielist.csv").getInputStream();
+
                 List<Movie> movieList = new ArrayList<>();
 
-                var reader = new BufferedReader(new InputStreamReader(new FileInputStream(file.getPath())));
+                var reader = new BufferedReader(new InputStreamReader(imp));
                 String row = null;
                 while ((row = reader.readLine()) != null) {
                     String[] dados = row.split(";");
