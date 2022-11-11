@@ -29,30 +29,30 @@ public class MovieService {
 
         var movieDTOList = transformWinnersInMovieDto(mapMoviesWithMoreWinners);
 
-        var average = getAverageInterval(movieDTOList);
-
-        return Optional.of(getMovieResponse(movieDTOList, average));
+        return Optional.of(getMovieResponse(movieDTOList));
     }
 
     public Movie save(Movie movie){
         return movieRepository.save(movie);
     }
 
-    private static MovieResponseDTO getMovieResponse(List<MovieDTO> movieDTOList, Double average){
-        List<MovieDTO> min = new ArrayList<>();
-        List<MovieDTO> max = new ArrayList<>();
-        movieDTOList.forEach(movieDTO -> {
-            if(movieDTO.getInterval() <= average) {
-                min.add(movieDTO);
-            } else{
-                max.add(movieDTO);
-            }
-        });
-        return MovieResponseDTO.of(min, max);
-    }
+    private static MovieResponseDTO getMovieResponse(List<MovieDTO> movieDTOList){
 
-    private static Double getAverageInterval(List<MovieDTO> movieDTOList) {
-        return movieDTOList.stream().mapToInt(MovieDTO::getInterval).sum() / (double) movieDTOList.size();
+        List<MovieDTO> minWinner = movieDTOList.stream().filter(
+           producerInterval -> producerInterval.getInterval().equals(
+              movieDTOList.stream()
+                 .min(Comparator.comparing(MovieDTO::getInterval))
+                 .orElseThrow(NoSuchElementException::new).getInterval()
+           )).toList();
+
+        List<MovieDTO> maxWinner = movieDTOList.stream().filter(
+           producerInterval -> producerInterval.getInterval().equals(
+              movieDTOList.stream()
+                 .max(Comparator.comparing(MovieDTO::getInterval))
+                 .orElseThrow(NoSuchElementException::new).getInterval()
+           )).toList();
+
+        return MovieResponseDTO.of(minWinner, maxWinner);
     }
 
     private static List<MovieDTO> transformWinnersInMovieDto(HashMap<String, List<Integer>> mapMoviesWithMoreWinners) {
