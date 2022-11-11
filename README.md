@@ -71,6 +71,7 @@ Pronto a aplicação irá subir.
 - Rodar via docker-compose, na raiz do projeto executar o seguinte comando: `docker-compose up`
 
 Efetua a chamada a seguir:
+
 http://localhost:8000/v1/movies
 
 Para executar os testes basta rodar os mesmos nas classes MovieResourceTest para testes do resource e MovieServiceTest
