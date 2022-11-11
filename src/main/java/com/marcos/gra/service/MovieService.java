@@ -39,14 +39,14 @@ public class MovieService {
     private static MovieResponseDTO getMovieResponse(List<MovieDTO> movieDTOList){
 
         List<MovieDTO> minWinner = movieDTOList.stream().filter(
-           producerInterval -> producerInterval.getInterval().equals(
+           movieInterval -> movieInterval.getInterval().equals(
               movieDTOList.stream()
                  .min(Comparator.comparing(MovieDTO::getInterval))
                  .orElseThrow(NoSuchElementException::new).getInterval()
            )).toList();
 
         List<MovieDTO> maxWinner = movieDTOList.stream().filter(
-           producerInterval -> producerInterval.getInterval().equals(
+           movieInterval -> movieInterval.getInterval().equals(
               movieDTOList.stream()
                  .max(Comparator.comparing(MovieDTO::getInterval))
                  .orElseThrow(NoSuchElementException::new).getInterval()
