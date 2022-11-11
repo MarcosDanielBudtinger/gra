@@ -16,7 +16,7 @@ obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que o
 ### Endpoints
 
 Verbo `GET` 
-- http://localhost:8080/movies
+- http://localhost:8000/v1/movies
 
 ### Exemplo de resposta:
 ```json
@@ -70,4 +70,4 @@ repare que temos o nome do build como 2f259f03b214, feito isso basta executar o 
 Pronto a aplicação irá subir.
 
 Efetua a chamada a seguir:
-http://localhost:8000/movies
+http://localhost:8000/v1/movies
